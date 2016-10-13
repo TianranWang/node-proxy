@@ -25,8 +25,6 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     })
 
     function _proxyGet(req,res){
-        console.log(host)
-        console.log(req.url)
         http.get({
             hostname:host,
             port,
@@ -37,10 +35,7 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     }
     function pipeRes(proxyRes,res){
         res.writeHead(proxyRes.statusCode,proxyRes.headers);
-        proxyRes.pipe(res,{end:false})
-        proxyRes.on('end',()=>{
-            res.end()
-        })
+        proxyRes.pipe(res)
     }
     function _proxyPost(req,res){
 
@@ -63,9 +58,3 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
         })
     }
 }
-
-
-
-
-
-
