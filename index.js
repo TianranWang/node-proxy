@@ -1,7 +1,7 @@
 'use strict';
 
 require('http').createServer((req,res)=>{
-    res.end('success');
+    res.end(`success\nhttp//localhost:4050`);
 }).listen(4050)
 
 
