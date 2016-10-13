@@ -4,8 +4,12 @@ const querystring = require('querystring')
  * author: sunopar
  */
 
+// require('http').createServer((req,res)=>{
+//     console.log('success')
+//     res.end();
+// }).listen(4050)
+
 module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
-    let _http = require('http')
     let data  = '';
     const server = http.createServer((req,res)=>{
         switch(req.method){
@@ -27,7 +31,7 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     })
 
     function _proxyGet(req,res){
-        _http.get(`${host}${req.url}`,proxyRes=>{
+        http.get(`${host}${req.url}`,proxyRes=>{
             pipeRes(proxyRes,res)       
         })
     }
@@ -51,7 +55,7 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
             data+=chunk
         })
         .addListener('end',()=>{
-            let request = _http.request(opt,proxyRes=>{
+            let request = http.request(opt,proxyRes=>{
                 pipeRes(proxyRes,res)
             })
             request.write(data);

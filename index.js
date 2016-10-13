@@ -4,6 +4,6 @@ var proxy = require('./proxy.js');
 
 proxy({
 	host:'localhost',
-	port:80,
+	port:4050,
 	proxyPort:4040
 });

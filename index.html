@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+<script>
+	var data = {a:1}
+	data = JSON.stringify(data)
+	fetch('http://localhost:4040/aa',{
+	    method:'POST',
+	    headers:{
+	        'Accept':'application/json',
+	        'Content-Length':data.length,
+	        'Content-Type':'application/x-www-form-urlencoded'
+	    },
+	    body:data
+	}).then(()=>{
+		console.log('aaaaa')
+	});
+</script>
+</html>
