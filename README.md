@@ -13,3 +13,8 @@ node index.js
 - host: 你要请求的目标主机
 - port: 目标主机端口
 - proxyPort:本地代理服务器端口
+
+
+## 测试
+
+想看测试用例，请切换`test`分支
