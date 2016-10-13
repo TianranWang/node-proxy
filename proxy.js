@@ -4,10 +4,6 @@ const querystring = require('querystring')
  * author: sunopar
  */
 
-require('http').createServer((req,res)=>{
-    res.end('success');
-}).listen(4050)
-
 module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     let data  = '';
     const server = http.createServer((req,res)=>{
@@ -23,7 +19,6 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
                 res.end()
                 break
         }
-        
         
     }).listen(proxyPort,()=>{
         console.log(`proxy listen on port ${proxyPort}`)
