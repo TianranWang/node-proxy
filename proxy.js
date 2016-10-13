@@ -4,10 +4,9 @@ const querystring = require('querystring')
  * author: sunopar
  */
 
-// require('http').createServer((req,res)=>{
-//     console.log('success')
-//     res.end();
-// }).listen(4050)
+require('http').createServer((req,res)=>{
+    res.end('success');
+}).listen(4050)
 
 module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     let data  = '';
@@ -31,7 +30,13 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     })
 
     function _proxyGet(req,res){
-        http.get(`${host}${req.url}`,proxyRes=>{
+        console.log(host)
+        console.log(req.url)
+        http.get({
+            hostname:host,
+            port,
+            path:req.path
+        },proxyRes=>{
             pipeRes(proxyRes,res)       
         })
     }
