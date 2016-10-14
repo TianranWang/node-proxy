@@ -15,8 +15,7 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
                 _proxyPost(req,res)
                 break
             default:
-                res.write('can only request get/post')
-                res.end()
+                res.end('can only request get/post')
                 break
         }
         
@@ -35,6 +34,7 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     }
     function pipeRes(proxyRes,res){
         res.writeHead(proxyRes.statusCode,proxyRes.headers);
+        proxyRes.setEncoding('utf8')
         proxyRes.pipe(res)
     }
     function _proxyPost(req,res){
@@ -46,6 +46,7 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
             path:req.url,
             headers:req.headers,
         }
+        req.setEncoding('utf8')
         req.addListener('data',chunk=>{
             data+=chunk
         })
