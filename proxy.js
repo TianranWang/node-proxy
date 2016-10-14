@@ -5,7 +5,6 @@ const querystring = require('querystring')
  */
 
 module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
-    let _http = require('http')
     let data  = '';
     const server = http.createServer((req,res)=>{
         switch(req.method){
@@ -27,17 +26,14 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
     })
 
     function _proxyGet(req,res){
-        _http.get(`${host}${req.url}`,proxyRes=>{
+        http.get(`${host}${req.url}`,proxyRes=>{
             pipeRes(proxyRes,res)       
         })
     }
     function pipeRes(proxyRes,res){
         res.writeHead(proxyRes.statusCode,proxyRes.headers);
-        proxyRes.pipe(res,{end:false})
-        proxyRes.on('end',()=>{
-            res.end()
-        })
-    }
+       proxyRes.setEncoding('utf8')
+        proxyRes.pipe(res)
     function _proxyPost(req,res){
 
         let opt = {
@@ -47,15 +43,16 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
             path:req.url,
             headers:req.headers,
         }
+        req.setEncoding('utf8')
         req.addListener('data',chunk=>{
             data+=chunk
         })
         .addListener('end',()=>{
-            let request = _http.request(opt,proxyRes=>{
+            let request = http.request(opt,proxyRes=>{
                 pipeRes(proxyRes,res)
             })
-            request.write(data);
-            request.end();
+            request.write(data)
+            request.end()
         })
     }
 }
