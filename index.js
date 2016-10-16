@@ -1,9 +1,8 @@
 'use strict';
 
 require('http').createServer((req,res)=>{
-    res.end(`success\nhttp//localhost:4050`);
+    res.end(`success\nlocalhost:4050`);
 }).listen(4050)
-
 
 var proxy = require('./proxy.js');
 
