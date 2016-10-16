@@ -47,6 +47,7 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
             path:req.url,
             headers:req.headers,
         }
+        req.setEncoding('utf8')
         req.addListener('data',chunk=>{
             data.push(chunk)
         })
@@ -55,8 +56,8 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
             let request = http.request(opt,proxyRes=>{
                 pipeRes(proxyRes,res)
             })
-            request.write(data);
-            request.end();
+            request.write(data)
+            request.end()
         })
     }
 }
