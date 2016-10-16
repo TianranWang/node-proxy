@@ -5,7 +5,8 @@ const querystring = require('querystring')
  */
 
 module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
-    let data  = '';
+
+    let data  = [];
     const server = http.createServer((req,res)=>{
         switch(req.method){
             case 'GET':
@@ -28,14 +29,13 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
         http.get({
             hostname:host,
             port,
-            path:req.path
+            path:req.url
         },proxyRes=>{
             pipeRes(proxyRes,res)       
         })
     }
     function pipeRes(proxyRes,res){
         res.writeHead(proxyRes.statusCode,proxyRes.headers);
-        proxyRes.setEncoding('utf8')
         proxyRes.pipe(res)
     }
     function _proxyPost(req,res){
@@ -49,14 +49,15 @@ module.exports = function proxy({host='localhost',port=80,proxyPort=4040}){
         }
         req.setEncoding('utf8')
         req.addListener('data',chunk=>{
-            data+=chunk
+            data.push(chunk)
         })
         .addListener('end',()=>{
+            data = Buffer.concat(data)
             let request = http.request(opt,proxyRes=>{
                 pipeRes(proxyRes,res)
             })
-            request.write(data);
-            request.end();
+            request.write(data)
+            request.end()
         })
     }
 }
